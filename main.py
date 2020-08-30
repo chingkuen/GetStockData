@@ -49,9 +49,19 @@ def MergeData(StartDate, EndDate, StockNumber):
             start_month += 1
     return WholeData
 
+def transform_date(date):   #民國轉西元
+    y, m, d = date.split('/')
+    return str(int(y)+1911) + '/' + m  + '/' + d
+    
+def ProcessData(WholeData):
+    for i in range(0,len(WholeData)):
+        temp = transform_date(WholeData[i][0])
+        WholeData[i][0] = temp
+
 def main():
     StartDate = input('Please input start date (format pattern is YYYY/MM/DD):')
     EndDate = input ('Please input end date (format pattern is YYYY/MM/DD):')
     StockNumber = input ('Please input stock number:')
     Whole_Data = MergeData(StartDate, EndDate, StockNumber)
+    ProcessData(Whole_Data)
     print (Whole_Data)
