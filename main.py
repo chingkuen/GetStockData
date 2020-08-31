@@ -75,14 +75,14 @@ def WeeklyFilter(WholeData):
             pass
         else:
             FilterData.append(WholeData[i])
-    FilterData.append(WholeData[i])
+    FilterData.append(WholeData[i+1])
     return FilterData
 
 def main():
     StartDate = input('Please input start date (format pattern is YYYY/MM/DD):')
     EndDate = input ('Please input end date (format pattern is YYYY/MM/DD):')
     StockNumber = input ('Please input stock number:')
-    Whole_Data = list(MergeData(StartDate, EndDate, StockNumber))
+    Whole_Data = MergeData(StartDate, EndDate, StockNumber)
     FullData = ProcessData(Whole_Data)
     print (FullData)
     FilterData = WeeklyFilter(FullData)
