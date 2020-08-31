@@ -54,14 +54,39 @@ def transform_date(date):   #民國轉西元
     return str(int(y)+1911) + '/' + m  + '/' + d
     
 def ProcessData(WholeData):
+    '''
+    Process the stock data from TWSE
+    Transfer the year of the date to DC
+    Add weekday and the number of week into the date list    
+    '''
+
     for i in range(0,len(WholeData)):
         temp = transform_date(WholeData[i][0])
         WholeData[i][0] = temp
+        temp1 = datetime.datetime.strptime(temp, '%Y/%m/%d')
+        WholeData[i].append(datetime.datetime.strftime(temp1, '%a'))
+        WholeData[i].append(datetime.datetime.strftime(temp1, '%W'))
+    return WholeData
+
+def WeeklyFilter(WholeData):
+    FilterData = []
+    for i in range(0,len(WholeData)-1):
+        if WholeData[i][10] == WholeData[i+1][10]:
+            pass
+        else:
+            FilterData.append(WholeData[i])
+    FilterData.append(WholeData[i])
+    return FilterData
 
 def main():
     StartDate = input('Please input start date (format pattern is YYYY/MM/DD):')
     EndDate = input ('Please input end date (format pattern is YYYY/MM/DD):')
     StockNumber = input ('Please input stock number:')
-    Whole_Data = MergeData(StartDate, EndDate, StockNumber)
-    ProcessData(Whole_Data)
-    print (Whole_Data)
+    Whole_Data = list(MergeData(StartDate, EndDate, StockNumber))
+    FullData = ProcessData(Whole_Data)
+    print (FullData)
+    FilterData = WeeklyFilter(FullData)
+    print ('*'*50)
+    print (FilterData)
+
+main()
